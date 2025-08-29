@@ -1,15 +1,14 @@
 import Form from '@/app/ui/invoices/edit-form';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
-import { fetchCustomers } from '@/app/lib/data';
+import { fetchInvoiceById, fetchCustomers } from '@/app/lib/data';
 
-export default async function Page() {
-    // once you land on this page, get the invoice id from the url params
-    // fetch invoice from db with the invoice id, then return the form with the invoice data
-    // create a server action to update the form data
-    // validate data
-    // handle errors
-    // update db
-    // send user back to invoice page
+export default async function Page(props: { params: Promise<{ id: string }> }) {
+    const params = await props.params;
+    const id = params.id;
+    const [invoice, customers] = await Promise.all([
+        fetchInvoiceById(id), fetchCustomers()
+    ]);
+
     return (
         <main>
             <Breadcrumbs
